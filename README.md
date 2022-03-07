@@ -8,4 +8,4 @@ Transcript page is structured as follows:
 <b>hhh:mm:ss
 ```
   
-Hence a regex grabbing text between "<b>" and next "<b>" should collect all transcripts+explanations
+Hence a regex grabbing text between "(b)" and next "(b)" should collect all transcripts+explanations

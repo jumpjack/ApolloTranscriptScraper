@@ -39,7 +39,7 @@ function extract() {
 	
 
 	// Extraxt text, timestamp and comments, and store them separately into fixedTranscript object
-	rawLinePattern = /<b>[\s\S]*?<b>/g
+	rawLinePattern = /<b>10[\s\S]*?<b>/g
 	rawResults = inputText.value.match(rawLinePattern);
 	console.log("****RAW: ",rawResults);
 	rawResults.forEach( (rawLine) => {
@@ -51,7 +51,7 @@ function extract() {
 		blockPattern = /<blockquote>[\s\S]*?<\/blockquote>/g
 		blockquotes = rawLine.match(blockPattern);
 		if ((blockquotes) && (blockquotes.length>0)) {
-			blockquote = blockquotes[0].replace("<blockquote>","").replace("</blockquote>","");
+			blockquote = blockquotes[0];//.replace("<blockquote>","").replace("</blockquote>","");
 		}	else {
 			blockquote = "";
 		}
@@ -61,6 +61,7 @@ function extract() {
 		
 		// Clean timestamp
 		timestamp = timestamp.replace("<b>","").replace("</b>","");
+		blockquote = blockquote.replace("<blockquote><i>","").replace("</i></blockquote>","");
 		
 		// Store everithing
 		fixedTranscript.push( {time: timestamp, text: rawLine, explanation: blockquote} );	

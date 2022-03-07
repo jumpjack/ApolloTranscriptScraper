@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="PSPad editor, www.pspad.com">
+  <title></title>
+  </head>
+  <body>
+  <b><big>Apollo Lunar Surface Journal scraper</big></b><br>
+  Use this page to automatically extract text, timestamps and explanations from   <a href="https://www.hq.nasa.gov/alsj/a11/a11.landing.html">original NASA transcript</a>
+  and turn it itno JSON format.<br>
+  <br>
+  
+<textarea id="inputText" name="inputText" rows=20 cols=150>Paste here raw HTML from https://www.hq.nasa.gov/alsj/a11/a11.landing.html</textarea><br>
+<button onclick = extract()>Go</button><br>
+<textarea id="outputText" name="outputText" rows=20 cols=150></textarea><br>
+
+<script>
+// v. 1.0.0 - 2022-03-07
+function extract() {
+	fixedTranscript = [];
+	
+	// Remove internal and external links:
+	temp =  document.getElementById("inputText").value;
+	anchorPattern = /<a [\s\S]*?=\"[\s\S]*?\">[\s\S]*?<\/a>/g
+	anchorResults = inputText.value.match(anchorPattern);
+	if ((anchorResults) && (anchorResults.length >0)) {
+		anchorResults.forEach( (anchor) => {
+			timePattern = />[\s\S]*?</g
+			timeRegex = anchor.match(timePattern);
+			timestamp = timeRegex[0].replace("<","");
+			timestamp = timestamp.replace(">","");
+	console.log("Sostituisco " , anchor , " con " , timestamp);		
+			temp = temp.replace(anchor,timestamp);
+		}
+		);
+	}
+	inputText.value = temp;
+	
+
+	// Extraxt text, timestamp and comments, and store them separately into fixedTranscript object
+	rawLinePattern = /<b>[\s\S]*?<b>/g
+	rawResults = inputText.value.match(rawLinePattern);
+	console.log("****RAW: ",rawResults);
+	rawResults.forEach( (rawLine) => {
+		// Extract timestamp
+		timePattern = /<b>[\s\S]*?<\/b>/g
+		timestamp = rawLine.match(timePattern)[0];	
+		
+		// Extract explanations
+		blockPattern = /<blockquote>[\s\S]*?<\/blockquote>/g
+		blockquotes = rawLine.match(blockPattern);
+		if ((blockquotes) && (blockquotes.length>0)) {
+			blockquote = blockquotes[0].replace("<blockquote>","").replace("</blockquote>","");
+		}	else {
+			blockquote = "";
+		}
+		
+		// process text to remove timestamp and explanations:
+		rawLine = rawLine.replace(timestamp,"").replace(blockquote,"").replace("<b>","").split("\n").join("").split("<p>").join("").replace("<blockquote>","").replace("</blockquote>","");
+		
+		// Clean timestamp
+		timestamp = timestamp.replace("<b>","").replace("</b>","");
+		
+		// Store everithing
+		fixedTranscript.push( {time: timestamp, text: rawLine, explanation: blockquote} );	
+	}
+	);
+	
+	// Display results
+	outputText.value=JSON.stringify(fixedTranscript,null,4);
+}
+
+</script>
+  </body>
+</html>

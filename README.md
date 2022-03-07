@@ -4,7 +4,7 @@ Forked from [charlesreid1-bots/apollo-space-junk](https://github.com/charlesreid
 
 ```
 <b>hhh:mm:ss</b> <DIALOGS> <ENTER>
-<blockquote><EXPLANATIONS> <ENTER>
+<blockquote><EXPLANATIONS></blockquote><ENTER>
 <b>hhh:mm:ss
 ```
   

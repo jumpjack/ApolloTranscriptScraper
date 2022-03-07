@@ -1,3 +1,8 @@
+Forked from charlesreid1-bots/apollo-space-junk , just to rewrite the ALSJ scraper in javascript rather than python, because the /apollo/data folder contains obsolete transcripts.
+
+
+----------------
+
 # Apollo Space Junk Bot Flock
 
 [apollo space junk bot flock twitter list](https://twitter.com/charlesreid1/lists/space-junk-botflock)
